@@ -15,7 +15,7 @@ export class Tab2Page {
 
   timer: number;
   timerInterval: any;
-  startDuration = 10;
+  timerVal: number;
 
   state: 'start' | 'stop' = 'stop';
 
@@ -31,12 +31,10 @@ export class Tab2Page {
   yellow = "#FFFD46";
   red = "#FF4646";
 
-
   constructor() { }
 
   startTimer(duration: number) {
     this.state = 'start';
-    clearInterval(this.timerInterval);
     this.timer = duration;
     this.updateTimeValue();
     this.timerInterval = setInterval(() => {
@@ -66,7 +64,7 @@ export class Tab2Page {
     const text = minutes + ':' + seconds
     this.time.next(text);
 
-    const totalTime = this.startDuration;
+    const totalTime = this.timerVal;
     const percentage = ((totalTime - this.timer) / totalTime) * 100;
     this.percent.next(percentage);
 
@@ -81,7 +79,7 @@ export class Tab2Page {
 
     for (let key of this.colorMap.keys()) {
       colorPercentile = this.colorMap.get(key);
-      var colorUpdateInterval = (this.startDuration * colorPercentile / 100) * 1000;
+      var colorUpdateInterval = (this.timerVal * colorPercentile / 100) * 1000;
 
       setTimeout(() => {
         this.getColor(key);
