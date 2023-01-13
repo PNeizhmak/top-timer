@@ -14,8 +14,8 @@ export class Tab2Page {
   percent: BehaviorSubject<number> = new BehaviorSubject(100);
 
   timer: number;
-  interval: any; 
-  startDuration = 450;
+  timerInterval: any;
+  startDuration = 10;
 
   state: 'start' | 'stop' = 'stop';
 
@@ -24,20 +24,29 @@ export class Tab2Page {
 
   color_list: { color: string; }[] = [];
 
-  constructor() {}
+  gradientStep: number;
+  currentStep = 0;
+
+  green = "#46FF46";
+  yellow = "#FFFD46";
+  red = "#FF4646";
+
+
+  constructor() { }
 
   startTimer(duration: number) {
     this.state = 'start';
-    clearInterval(this.interval);
+    clearInterval(this.timerInterval);
     this.timer = duration;
     this.updateTimeValue();
-    this.interval = setInterval(() => {
-        this.updateTimeValue()
+    this.timerInterval = setInterval(() => {
+      this.updateTimeValue()
     }, 1000);
+    this.updateColorValue();
   }
 
   stopTimer() {
-    clearInterval(this.interval);
+    clearInterval(this.timerInterval);
     this.time.next('00:00');
     this.state = 'stop';
   }
@@ -47,10 +56,6 @@ export class Tab2Page {
     return circleDasharray * (1 - percentFloat);
   }
 
-  // swapDuration() {
-  //   this.startDuration = this.startDuration === 1 ? 0.5 : 1;
-  // }
-
   updateTimeValue() {
     let minutes: any = this.timer / 60;
     let seconds: any = this.timer % 60;
@@ -59,31 +64,57 @@ export class Tab2Page {
     seconds = String('0' + Math.floor(seconds)).slice(-2);
 
     const text = minutes + ':' + seconds
-    this.time.next(text); 
+    this.time.next(text);
 
     const totalTime = this.startDuration;
     const percentage = ((totalTime - this.timer) / totalTime) * 100;
     this.percent.next(percentage);
 
-    this.color_list = [{
-      color : this.getColor()
-    }];
-
     --this.timer;
-    if (this.timer < -1) {
-      // this.swapDuration();
-      this.startTimer(this.startDuration);
+    if (this.timer < 0) {
+      this.stopTimer();
     }
   }
 
-  getColor() {
-    var color = "#";
-      for (var i = 0; i < 3; i++)
-      {
-          var part = Math.round(Math.random() * 255).toString(16);
-          color += (part.length > 1) ? part : "0" + part;
-      }
-      return color;
+  updateColorValue() {
+    var colorPercentile: any = this.colorMap.get(this.green);
+
+    for (let key of this.colorMap.keys()) {
+      colorPercentile = this.colorMap.get(key);
+      var colorUpdateInterval = (this.startDuration * colorPercentile / 100) * 1000;
+
+      setTimeout(() => {
+        this.getColor(key);
+        console.log(key, this.time.value);
+      }, colorUpdateInterval);
+    }
   }
 
+  /*
+    @key represents the color
+    @value represents percent from @startDuration to apply the @key (change the color)
+    Example:
+      x = 10 sec. green=5 sec, yellow=3 sec, red=2 sec
+      x = 20 sec. green=10 sec, yellow=6 sec, red= 4 sec
+  */
+  colorMap = new Map<string, number>([
+    [this.green, 0],
+    [this.yellow, 50],
+    [this.red, 80]
+  ]);
+
+  getColor(color: string) {
+    this.color_list = [{
+      color: color
+    }];
+  }
+
+  getRandomColor() {
+    var color = "#";
+    for (var i = 0; i < 3; i++) {
+      var part = Math.round(Math.random() * 255).toString(16);
+      color += (part.length > 1) ? part : "0" + part;
+    }
+    return color;
+  }
 }
