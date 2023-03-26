@@ -14,7 +14,7 @@
   </ion-header>
 
   <ion-row class="ion-justify-content-center">
-    <svg id="progress-circle" width="50vh" heigh="50vh" viewBox="0 0 200 200">
+    <svg id="progress-circle" width="25vh" heigh="25vh" viewBox="0 0 200 200">
 
       <linearGradient id="linearColors1" x1="0" y1="0" x2="1" y2="1">
         <stop offset="0%" stop-color="#ddd6f3"></stop>
@@ -23,25 +23,24 @@
       <circle cx="50%" cy="50%" [attr.r]="circleR" fill="none" stroke="#f3f3f3" stroke-width="12" />
       <circle cx="50%" cy="50%" [attr.r]="circleR" fill="none" stroke="url(#linearColors1)" stroke-width="12"
         stroke-linecap="round" [attr.stroke-dasharray]="circleDasharray"
-        [attr.stroke-dashoffset]="percentageOffset(percent | async)" />
+        [attr.stroke-dashoffset]="percentageOffset(percent | async)" [ngStyle]="{'fill':i.color}" *ngFor="let i of color_list"/>
       <text x="50%" y="55%" class="timer-text">
         {{ time | async }}
       </text>
     </svg>
   </ion-row>
   <ion-row>
-    <ion-card [ngStyle]="{'background':i.color}" *ngFor="let i of color_list">
-      <strong>Timer colors will appear here</strong>
-    </ion-card>
     <ion-item>
       <ion-label>Timer seconds:</ion-label>
       <ion-input type="number" [(ngModel)]="timerVal" name="timerVal"></ion-input>
     </ion-item>
+    <ion-card class="card-content" [ngStyle]="{'background':i.color}" *ngFor="let i of color_list">
+      <strong>Timer colors will appear here</strong>
+    </ion-card>
   </ion-row>
 </ion-content>
 
 <ion-footer class="footer">
-  <ion-button *ngIf="state === 'stop'" expand="block" color="primary"
-    (click)="startTimer(timerVal)">START</ion-button>
+  <ion-button *ngIf="state === 'stop'" expand="block" color="primary" (click)="startTimer(timerVal)">START</ion-button>
   <ion-button *ngIf="state === 'start'" expand="block" color="danger" (click)="stopTimer()">STOP</ion-button>
 </ion-footer>

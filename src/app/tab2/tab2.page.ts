@@ -19,7 +19,7 @@ export class Tab2Page {
 
   state: 'start' | 'stop' = 'stop';
 
-  circleR = circleR
+  circleR = circleR;
   circleDasharray = circleDasharray;
 
   color_list: { color: string; }[] = [];
@@ -90,7 +90,7 @@ export class Tab2Page {
 
   /*
     @key represents the color
-    @value represents percent from @startDuration to apply the @key (change the color)
+    @value represents percent from @timerVal to apply the @key (change the color)
     Example:
       x = 10 sec. green=5 sec, yellow=3 sec, red=2 sec
       x = 20 sec. green=10 sec, yellow=6 sec, red= 4 sec

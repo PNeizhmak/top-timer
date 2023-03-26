@@ -1,24 +1,32 @@
 #progress-circle {
-    margin-top: 50px;
-    transform: rotate(-90deg);
+  margin-top: 5px;
+  transform: rotate(-90deg);
 }
 
 .timer-text {
-    transform: rotate(90deg);
-    transform-origin: center;
-    font-size: 36px;
-    text-anchor: middle;
-    font-weight: 600;
-    fill: #333;
+  transform: rotate(90deg);
+  transform-origin: center;
+  font-size: 36px;
+  text-anchor: middle;
+  font-weight: 600;
+  fill: #333;
 }
 
-ion-card {
-    height: 10vh;
-    --background: #000;
-    --color: #9efff0;
-  }
-  
-  ion-card strong {
-    font-size: 20px;
-    line-height: 26px;
-  }
+.card-content {
+  height: 100%;
+  width: 100%;
+  height: 40vh;
+  width: 100vw;
+  margin: 0;
+}
+
+// ion-card {
+//   display: flex;
+//   flex-direction: column;
+//   width: 100% !important;
+// }
+
+// ion-card strong {
+//   font-size: 20px;
+//   line-height: 26px;
+// }
